@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MemoryRisk">
+  <rect width="64" height="64" rx="14" fill="#0c1f2e"/>
+  <path d="M18 18h28v28H18z" fill="#e8fbff"/>
+  <path d="M23 23h18v18H23z" fill="#0f766e"/>
+  <path d="M13 22h5M13 31h5M13 40h5M46 22h5M46 31h5M46 40h5M22 13v5M31 13v5M40 13v5M22 46v5M31 46v5M40 46v5" stroke="#74d7c4" stroke-width="3" stroke-linecap="round"/>
+  <path d="M26 35l4 4 9-14" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

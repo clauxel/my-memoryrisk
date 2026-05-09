@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 680" role="img" aria-label="MemoryRisk supply risk map">
+  <rect width="1120" height="680" rx="0" fill="#0c1f2e"/>
+  <rect x="48" y="48" width="1024" height="584" rx="18" fill="#f8fbf9"/>
+  <rect x="78" y="82" width="278" height="510" rx="10" fill="#102838"/>
+  <text x="104" y="126" fill="#e8fbff" font-family="Arial, sans-serif" font-size="30" font-weight="700">MemoryRisk</text>
+  <text x="104" y="160" fill="#93c5bd" font-family="Arial, sans-serif" font-size="16">6-month BOM exposure</text>
+  <rect x="104" y="208" width="198" height="74" rx="8" fill="#0f766e"/>
+  <text x="126" y="252" fill="#ffffff" font-family="Arial, sans-serif" font-size="34" font-weight="700">78</text>
+  <text x="180" y="252" fill="#d9fff4" font-family="Arial, sans-serif" font-size="15">High risk</text>
+  <rect x="104" y="316" width="202" height="16" rx="8" fill="#21485a"/>
+  <rect x="104" y="316" width="158" height="16" rx="8" fill="#f59e0b"/>
+  <rect x="104" y="366" width="202" height="16" rx="8" fill="#21485a"/>
+  <rect x="104" y="366" width="126" height="16" rx="8" fill="#38bdf8"/>
+  <rect x="104" y="416" width="202" height="16" rx="8" fill="#21485a"/>
+  <rect x="104" y="416" width="176" height="16" rx="8" fill="#ef4444"/>
+  <text x="104" y="510" fill="#d5fff4" font-family="Arial, sans-serif" font-size="18" font-weight="700">Priority lanes</text>
+  <text x="104" y="540" fill="#93c5bd" font-family="Arial, sans-serif" font-size="15">HBM3E: secure allocation</text>
+  <text x="104" y="566" fill="#93c5bd" font-family="Arial, sans-serif" font-size="15">DDR5 RDIMM: dual source</text>
+  <text x="104" y="592" fill="#93c5bd" font-family="Arial, sans-serif" font-size="15">Cloud A100: price guard</text>
+  <rect x="392" y="82" width="640" height="146" rx="12" fill="#ffffff" stroke="#d7e4df"/>
+  <text x="426" y="126" fill="#0c1f2e" font-family="Arial, sans-serif" font-size="22" font-weight="700">Budget sensitivity</text>
+  <path d="M430 190C500 154 552 169 604 146C664 119 720 164 782 134C846 104 906 126 994 96" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+  <path d="M430 198C508 188 562 218 624 204C690 190 740 226 800 206C864 184 914 218 996 178" fill="none" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
+  <rect x="392" y="258" width="300" height="334" rx="12" fill="#ffffff" stroke="#d7e4df"/>
+  <text x="426" y="304" fill="#0c1f2e" font-family="Arial, sans-serif" font-size="22" font-weight="700">Substitute map</text>
+  <rect x="426" y="342" width="230" height="58" rx="8" fill="#e8f6f2"/>
+  <text x="446" y="377" fill="#0f3b35" font-family="Arial, sans-serif" font-size="17" font-weight="700">HBM3E allocation</text>
+  <rect x="426" y="422" width="230" height="58" rx="8" fill="#eef6ff"/>
+  <text x="446" y="457" fill="#193d68" font-family="Arial, sans-serif" font-size="17" font-weight="700">GPU cloud fallback</text>
+  <rect x="426" y="502" width="230" height="58" rx="8" fill="#fff6df"/>
+  <text x="446" y="537" fill="#6b3d00" font-family="Arial, sans-serif" font-size="17" font-weight="700">DDR5 vendor swap</text>
+  <rect x="728" y="258" width="304" height="334" rx="12" fill="#ffffff" stroke="#d7e4df"/>
+  <text x="762" y="304" fill="#0c1f2e" font-family="Arial, sans-serif" font-size="22" font-weight="700">Procurement calendar</text>
+  <circle cx="788" cy="366" r="18" fill="#ef4444"/>
+  <line x1="788" y1="386" x2="788" y2="528" stroke="#d7e4df" stroke-width="4"/>
+  <circle cx="788" cy="444" r="18" fill="#f59e0b"/>
+  <circle cx="788" cy="526" r="18" fill="#0f766e"/>
+  <text x="830" y="372" fill="#0c1f2e" font-family="Arial, sans-serif" font-size="17" font-weight="700">Quote lock this week</text>
+  <text x="830" y="450" fill="#0c1f2e" font-family="Arial, sans-serif" font-size="17" font-weight="700">Approve substitutes</text>
+  <text x="830" y="532" fill="#0c1f2e" font-family="Arial, sans-serif" font-size="17" font-weight="700">MSP report due</text>
+</svg>

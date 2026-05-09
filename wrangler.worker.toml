@@ -1,0 +1,44 @@
+name = "my-memoryrisk"
+main = "worker/index.js"
+compatibility_date = "2026-05-09"
+workers_dev = true
+routes = [
+  { pattern = "memoryrisk.space/*", zone_name = "memoryrisk.space" },
+  { pattern = "www.memoryrisk.space/*", zone_name = "memoryrisk.space" }
+]
+
+[vars]
+CREEM_API_BASE = "https://api.creem.io"
+CREEM_ENV = "live"
+
+[[kv_namespaces]]
+binding = "ANALYTICS_KV"
+id = "841f68fb543846f58aa7dd6f6b04829b"
+
+[assets]
+directory = "./dist"
+binding = "SITE_ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = [
+  "/",
+  "/ai-memory-shortage-update",
+  "/memory-shortage-2026",
+  "/global-memory-shortage",
+  "/when-will-the-memory-shortage-end",
+  "/memory-chip-shortage",
+  "/memory-chip-shortage-2026",
+  "/hbm-memory-shortage",
+  "/memory-supply",
+  "/hbm-shortage-reddit",
+  "/semianalysis-hbm",
+  "/hbm-demand",
+  "/sk-hynix-stock",
+  "/why-is-there-a-chip-shortage",
+  "/silicon-shortage",
+  "/pricing",
+  "/privacy",
+  "/terms",
+  "/sitemap.xml",
+  "/robots.txt",
+  "/api/*"
+]
