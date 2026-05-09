@@ -637,8 +637,8 @@ export default function App() {
             <p>One-off reports can be sold from 499 to 1,999 USD when a buyer or MSP needs a dated decision memo without a full workspace.</p>
           </article>
           <article>
-            <h3>Does checkout replace the page?</h3>
-            <p>No. Creem opens in a centered popup and the MemoryRisk page stays visible behind a blurred overlay.</p>
+            <h3>What happens after Team checkout?</h3>
+            <p>The buyer gets a shared workspace for BOM imports, supplier comparison, purchase calendar reviews, and MSP-ready reporting.</p>
           </article>
         </div>
       ) : null}
@@ -743,8 +743,8 @@ export default function App() {
         <section className="mr-section">
           <div className="mr-section-head">
             <p className="mr-eyebrow">Core workflow</p>
-            <h2>A shortage site converts better when the visitor can immediately answer what to buy first.</h2>
-            <p>The MVP uses CSV/XLSX import, transparent rule scoring, and report generation. Later versions can connect Octopart, channel quotes, cloud price APIs, and team approval.</p>
+            <h2>Shortage risk gets easier to fund when the buyer can immediately see what to buy first.</h2>
+            <p>Start with CSV/XLSX imports, transparent risk scoring, and board-ready reports; expand into live channel quotes, cloud price APIs, and team approvals as purchasing gets more complex.</p>
           </div>
 
           <div className="mr-card-grid">
@@ -795,7 +795,7 @@ export default function App() {
           <div className="mr-section-head">
             <p className="mr-eyebrow">Market intelligence</p>
             <h2>Useful pages for buyers researching shortage risk before they upload a BOM.</h2>
-            <p>Each page answers a real planning question and brings the visitor back to the same risk console and checkout path.</p>
+            <p>Each page answers a real planning question, then ties the market signal back to a practical BOM decision.</p>
           </div>
           <div className="mr-guide-grid">
             {[
@@ -882,7 +882,7 @@ export default function App() {
           <div>
             <p className="mr-eyebrow">Recommended next step</p>
             <h2>Upload the BOM, then keep Team annual selected if the report fits.</h2>
-            <p>Checkout stays in a centered Creem popup, with annual billing selected by default.</p>
+            <p>Team annual is the default for shared procurement, finance review, and recurring MSP reporting.</p>
           </div>
           <div className="mr-article-cta-actions">
             <button type="button" className="mr-btn mr-btn-primary" onClick={() => chooseTeamAnnual(`article-${page.path}`)}>
