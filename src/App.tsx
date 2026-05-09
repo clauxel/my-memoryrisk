@@ -32,7 +32,6 @@ import {
   Wallet,
   X,
 } from 'lucide-react'
-import * as XLSX from 'xlsx'
 
 import { findKeywordPageByPath, keywordPages, type KeywordPage } from './content/keyword-pages'
 import { legalPrivacySections, legalTermsSections, type LegalSection } from './content/legal'
@@ -45,6 +44,8 @@ const defaultPublicAppOrigin = 'https://memoryrisk.space'
 const pagesApiBaseUrl = 'https://my-memoryrisk.yangdengkui01.workers.dev'
 
 type Billing = 'monthly' | 'annual'
+type WorkBook = import('xlsx').WorkBook
+type XlsxModule = typeof import('xlsx')
 
 type CheckoutModalState = {
   planId: PlanId
@@ -341,7 +342,7 @@ export default function App() {
     navigate(path)
   }
 
-  function parseWorkbook(workbook: XLSX.WorkBook) {
+  function parseWorkbook(XLSX: XlsxModule, workbook: WorkBook) {
     const sheetName = workbook.SheetNames[0]
     const sheet = workbook.Sheets[sheetName]
     const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: '' })
@@ -353,9 +354,11 @@ export default function App() {
 
   async function handleFileUpload(file: File) {
     try {
+      setImportMessage(`Reading ${file.name}...`)
+      const XLSX = await import('xlsx')
       const buffer = await file.arrayBuffer()
       const workbook = XLSX.read(buffer, { type: 'array' })
-      parseWorkbook(workbook)
+      parseWorkbook(XLSX, workbook)
       setImportMessage(`${file.name} analyzed`)
     } catch {
       setImportMessage('Could not read that file. Try CSV or XLSX with a header row.')
@@ -363,10 +366,12 @@ export default function App() {
     }
   }
 
-  function runPastedBom() {
+  async function runPastedBom() {
     try {
+      setImportMessage('Reading pasted BOM...')
+      const XLSX = await import('xlsx')
       const workbook = XLSX.read(inputText, { type: 'string' })
-      parseWorkbook(workbook)
+      parseWorkbook(XLSX, workbook)
       setImportMessage('Pasted BOM analyzed')
     } catch {
       setImportMessage('Could not parse the pasted data. Keep the CSV header row and try again.')
@@ -504,7 +509,7 @@ export default function App() {
         onChange={(event) => setInputText(event.currentTarget.value)}
         aria-label="Paste BOM CSV"
       />
-      <button type="button" className="mr-btn mr-btn-ghost mr-run-btn" onClick={runPastedBom}>
+      <button type="button" className="mr-btn mr-btn-ghost mr-run-btn" onClick={() => void runPastedBom()}>
         <Search size={18} />
         Analyze pasted BOM
       </button>
