@@ -225,7 +225,7 @@ function buildHomePrerender() {
           <p class="mr-eyebrow">AI memory shortage risk planner</p>
           <h1>Upload a BOM and see which memory lines can break the next six months.</h1>
           <p class="mr-lede">Score AI memory shortage and HBM shortage exposure from BOMs, supplier quotes, lead times, cloud fallback prices, and purchase history.</p>
-          <p><a class="mr-btn mr-btn-primary" href="/pricing">Start Team annual</a></p>
+          <p><a class="mr-btn mr-btn-primary" href="/pricing">Choose Team annual</a></p>
         </div>
       </section>
     </main>
@@ -245,7 +245,7 @@ function buildPricingPrerender() {
       <section class="mr-pricing-page-hero">
         <p class="mr-eyebrow">Pricing</p>
         <h1>MemoryRisk pricing starts with Team selected and annual billing already on.</h1>
-        <p class="mr-lede">Team annual is the default path and annual billing is 50% cheaper than the monthly run-rate.</p>
+        <p class="mr-lede">Team is selected by default and annual billing is 50% cheaper than the monthly run-rate.</p>
       </section>
     </main>`
 }

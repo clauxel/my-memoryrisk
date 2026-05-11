@@ -513,6 +513,27 @@ h3 {
   background: linear-gradient(135deg, var(--teal), var(--amber));
 }
 
+.mr-next-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: #edf6f0;
+  border: 1px solid rgba(15, 118, 110, 0.14);
+}
+
+.mr-next-box h3 {
+  margin: 4px 0 6px;
+  font-size: 1rem;
+}
+
+.mr-next-box p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
 .mr-success-banner {
   display: flex;
   gap: 10px;
@@ -1253,6 +1274,7 @@ h3 {
   }
 
   .mr-pricing-head,
+  .mr-next-box,
   .mr-article-cta {
     grid-template-columns: 1fr;
   }

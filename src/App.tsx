@@ -55,7 +55,7 @@ type CheckoutModalState = {
   checkoutUrl?: string
 }
 
-const ctaPrimary = 'Start Team annual'
+const ctaPrimary = 'Choose Team annual'
 const ctaCheckout = 'Checkout Team annual'
 
 const plans: Array<{
@@ -96,7 +96,7 @@ const plans: Array<{
 
 const trustItems = [
   { label: 'BOM risk score', value: '6 mo', detail: 'Decision horizon' },
-  { label: 'Default plan', value: 'Team', detail: 'Middle tier selected' },
+  { label: 'Default plan', value: 'Team', detail: 'Middle tier selected before checkout' },
   { label: 'Annual savings', value: '50%', detail: 'Annual selected first' },
   { label: 'Data posture', value: 'No secrets', detail: 'Planning fields only' },
 ]
@@ -551,6 +551,18 @@ export default function App() {
           ))}
         </div>
       </section>
+
+      <div className="mr-next-box">
+        <div>
+          <p className="mr-eyebrow">Recommended next move</p>
+          <h3>Keep Team annual selected once the BOM risk report fits the buying workflow.</h3>
+          <p>Checkout opens in a centered Creem popup while the planner stays visible.</p>
+        </div>
+        <button type="button" className="mr-btn mr-btn-primary" onClick={() => chooseTeamAnnual('planner')}>
+          <Wallet size={18} />
+          {ctaPrimary}
+        </button>
+      </div>
     </aside>
   )
 
@@ -559,7 +571,7 @@ export default function App() {
       <div className="mr-section-head mr-pricing-head">
         <div>
           <p className="mr-eyebrow">Pricing</p>
-          <h2>Team annual is selected because shortage risk is a shared, recurring buying workflow.</h2>
+          <h2>Team is selected because shortage risk is a shared, recurring buying workflow.</h2>
           <p>Annual billing is active by default and is 50% cheaper than the monthly run-rate. Project reports can be sold separately from 499 to 1,999 USD.</p>
         </div>
         <div className="mr-cycle" role="group" aria-label="Billing cycle">
@@ -581,7 +593,7 @@ export default function App() {
               trackEvent('billing_cycle_change', { billing: 'annual' })
             }}
           >
-            Annual 50% off
+            Annual - 50% off
           </button>
         </div>
       </div>
@@ -671,17 +683,24 @@ export default function App() {
             </p>
 
             <div className="mr-hero-actions">
-              <button type="button" className="mr-btn mr-btn-primary" onClick={() => fileInputRef.current?.click()}>
-                <Upload size={18} />
-                Upload BOM
-              </button>
-              <button type="button" className="mr-btn mr-btn-ghost" onClick={() => chooseTeamAnnual('hero')}>
+              <button type="button" className="mr-btn mr-btn-primary" onClick={() => chooseTeamAnnual('hero')}>
                 <Wallet size={18} />
                 {ctaPrimary}
               </button>
-              <button type="button" className="mr-btn mr-btn-subtle" onClick={() => navigate('/pricing#pricing')}>
+              <button
+                type="button"
+                className="mr-btn mr-btn-ghost"
+                onClick={() => {
+                  trackEvent('pricing_review', { source: 'hero-secondary' })
+                  navigate('/pricing#pricing')
+                }}
+              >
                 <BarChart3 size={18} />
                 Review plans
+              </button>
+              <button type="button" className="mr-btn mr-btn-subtle" onClick={() => fileInputRef.current?.click()}>
+                <Upload size={18} />
+                Upload BOM
               </button>
             </div>
             <p className="mr-payment-note">
@@ -691,12 +710,12 @@ export default function App() {
 
             <div className="mr-hero-proof">
               <div>
-                <span>Input</span>
-                <strong>BOM, supplier quotes, price indexes, lead times, cloud instance prices, and purchase history</strong>
+                <span>Default path</span>
+                <strong>Planner to Team annual to Creem popup to homepage return</strong>
               </div>
               <div>
-                <span>Output</span>
-                <strong>6-month risk score, alternative parts, budget sensitivity, purchase calendar, and MSP-ready report</strong>
+                <span>Trust posture</span>
+                <strong>BOM, supplier quotes, price indexes, lead times, cloud prices, and purchase history stay separate from supplier credentials</strong>
               </div>
             </div>
           </div>
