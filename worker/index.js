@@ -1,3 +1,5 @@
+import { handleAnalyticsRequest } from './analytics.js'
+import { handleNowPaymentsCheckout } from './nowpayments.js'
 const LIVE_ORIGIN = 'https://memoryrisk.space'
 const LIVE_HOST = 'memoryrisk.space'
 const ALT_HOSTS = new Set(['www.memoryrisk.space'])
@@ -96,10 +98,22 @@ function handleOptions(request) {
 }
 
 function maybeRedirectToHttps(requestUrl) {
-  if (requestUrl.protocol !== 'https:') {
+  if (requestUrl.hostname === LIVE_HOST || ALT_HOSTS.has(requestUrl.hostname)) {
+    if (requestUrl.protocol !== 'https:' || requestUrl.hostname !== LIVE_HOST) {
+      const redirectUrl = new URL(requestUrl)
+      redirectUrl.protocol = 'https:'
+      redirectUrl.hostname = LIVE_HOST
+      return Response.redirect(redirectUrl.toString(), 301)
+    }
+  }
+  return null
+}
+
+function maybeRedirectWww(requestUrl) {
+  if (ALT_HOSTS.has(requestUrl.hostname)) {
     const redirectUrl = new URL(requestUrl)
-    redirectUrl.protocol = 'https:'
-    return Response.redirect(redirectUrl.toString(), 308)
+    redirectUrl.hostname = LIVE_HOST
+    return Response.redirect(redirectUrl.toString(), 301)
   }
   return null
 }
@@ -295,7 +309,7 @@ function handleRuntime(request, requestUrl) {
       defaultPlan: 'team',
       defaultBilling: 'annual',
       annualDiscount: '50%',
-      analytics: 'first-party-kv-with-d1-ready',
+      analytics: 'cloudflare-d1',
       ts: Date.now(),
     },
     200,
@@ -303,105 +317,8 @@ function handleRuntime(request, requestUrl) {
   )
 }
 
-async function ensureAnalyticsSchema(env) {
-  if (!env?.ANALYTICS_DB?.prepare) return false
-
-  await env.ANALYTICS_DB.prepare(
-    `CREATE TABLE IF NOT EXISTS analytics_events (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      path TEXT,
-      occurred_at TEXT,
-      visitor_id TEXT,
-      session_id TEXT,
-      referrer_host TEXT,
-      utm_source TEXT,
-      utm_medium TEXT,
-      utm_campaign TEXT,
-      metadata TEXT,
-      ip_country TEXT,
-      user_agent TEXT,
-      received_at TEXT NOT NULL
-    )`,
-  ).run()
-
-  return true
-}
-
 async function handleAnalytics(request, env) {
-  if (request.method !== 'POST') {
-    return jsonResponse({ ok: false, error: 'Method not allowed.' }, 405, request)
-  }
-
-  let body
-  try {
-    body = await request.json()
-  } catch {
-    return jsonResponse({ ok: false, error: 'Invalid JSON body.' }, 400, request)
-  }
-
-  const events = Array.isArray(body?.events) ? body.events.slice(0, 40) : []
-  const acceptedEvents = events.filter((event) => event && typeof event.id === 'string' && typeof event.name === 'string')
-  const country = request.headers.get('CF-IPCountry') || null
-  const userAgent = request.headers.get('User-Agent') || null
-  const receivedAt = new Date().toISOString()
-
-  let persisted = false
-  let store = 'console'
-  try {
-    persisted = await ensureAnalyticsSchema(env)
-    if (persisted && acceptedEvents.length) {
-      await env.ANALYTICS_DB.batch(
-        acceptedEvents.map((event) =>
-          env.ANALYTICS_DB.prepare(
-            `INSERT OR IGNORE INTO analytics_events (
-              id, name, path, occurred_at, visitor_id, session_id, referrer_host,
-              utm_source, utm_medium, utm_campaign, metadata, ip_country, user_agent, received_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          ).bind(
-            event.id,
-            event.name.slice(0, 120),
-            String(event.path || '').slice(0, 500),
-            String(event.occurredAt || ''),
-            String(event.visitorId || '').slice(0, 120),
-            String(event.sessionId || '').slice(0, 120),
-            event.referrerHost ? String(event.referrerHost).slice(0, 250) : null,
-            event.utmSource ? String(event.utmSource).slice(0, 180) : null,
-            event.utmMedium ? String(event.utmMedium).slice(0, 180) : null,
-            event.utmCampaign ? String(event.utmCampaign).slice(0, 180) : null,
-            JSON.stringify(event.metadata || {}).slice(0, 4000),
-            country,
-            userAgent ? userAgent.slice(0, 500) : null,
-            receivedAt,
-          ),
-        ),
-      )
-      store = 'd1'
-    } else if (env?.ANALYTICS_KV?.put && acceptedEvents.length) {
-      const day = receivedAt.slice(0, 10)
-      const hour = receivedAt.slice(11, 13)
-      const batchId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`
-      await env.ANALYTICS_KV.put(
-        `events/${day}/${hour}/${batchId}.json`,
-        JSON.stringify({
-          site: 'memoryrisk.space',
-          receivedAt,
-          country,
-          accepted: acceptedEvents.length,
-          events: acceptedEvents,
-        }),
-        { expirationTtl: 60 * 60 * 24 * 180 },
-      )
-      persisted = true
-      store = 'kv'
-    }
-  } catch (error) {
-    console.log(JSON.stringify({ type: 'analytics_store_error', site: 'memoryrisk.space', message: String(error?.message || error) }))
-    persisted = false
-  }
-
-  console.log(JSON.stringify({ type: 'analytics', site: 'memoryrisk.space', accepted: acceptedEvents.length, persisted, store }))
-  return jsonResponse({ ok: true, accepted: acceptedEvents.length, persisted, store }, 202, request)
+  return handleAnalyticsRequest(request, env, { siteKey: 'memoryrisk' })
 }
 
 function buildSitemapXml() {
@@ -453,6 +370,14 @@ function handleIndexNowKey(request) {
   return new Response(INDEXNOW_KEY, { status: 200, headers })
 }
 
+function noIndexNotFoundResponse(request) {
+  const headers = securityHeaders(request)
+  headers.set('Content-Type', 'text/html; charset=utf-8')
+  headers.set('Cache-Control', 'no-store')
+  headers.set('X-Robots-Tag', 'noindex, nofollow')
+  return new Response('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Page not found</title></head><body><main><h1>Page not found</h1><p>This URL is not a public page for this product.</p></main></body></html>', { status: 404, headers })
+}
+
 async function fetchAsset(request, env) {
   if (env?.SITE_ASSETS?.fetch) {
     const requestUrl = new URL(request.url)
@@ -478,6 +403,22 @@ export async function handleRequest(request, env) {
   const requestUrl = new URL(request.url)
 
   if (request.method === 'OPTIONS') return handleOptions(request)
+
+  const wwwRedirect = maybeRedirectWww(requestUrl)
+  if (wwwRedirect) return wwwRedirect
+
+  if (requestUrl.pathname === '/api/nowpayments-checkout') {
+    return handleNowPaymentsCheckout(request, env, {
+      plans: planCatalog,
+      defaultPlanId: 'team',
+      siteName: 'memoryrisk',
+      siteKey: 'memoryrisk',
+      annualDiscountMultiplier: typeof ANNUAL_DISCOUNT_MULTIPLIER !== 'undefined'
+        ? ANNUAL_DISCOUNT_MULTIPLIER
+        : (typeof annualBillingMultiplier !== 'undefined' ? annualBillingMultiplier : 0.5),
+    })
+  }
+
   if (requestUrl.pathname === '/api/runtime') return handleRuntime(request, requestUrl)
   if (requestUrl.pathname === '/api/checkout') return handleCheckout(request, env, requestUrl)
   if (requestUrl.pathname === '/api/analytics/events') return handleAnalytics(request, env)

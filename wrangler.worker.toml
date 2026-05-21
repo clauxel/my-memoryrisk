@@ -11,34 +11,16 @@ routes = [
 CREEM_API_BASE = "https://api.creem.io"
 CREEM_ENV = "live"
 
-[[kv_namespaces]]
-binding = "ANALYTICS_KV"
-id = "841f68fb543846f58aa7dd6f6b04829b"
-
 [assets]
 directory = "./dist"
 binding = "SITE_ASSETS"
 not_found_handling = "single-page-application"
 run_worker_first = [
-  "/",
-  "/ai-memory-shortage-update",
-  "/memory-shortage-2026",
-  "/global-memory-shortage",
-  "/when-will-the-memory-shortage-end",
-  "/memory-chip-shortage",
-  "/memory-chip-shortage-2026",
-  "/hbm-memory-shortage",
-  "/memory-supply",
-  "/hbm-shortage-reddit",
-  "/semianalysis-hbm",
-  "/hbm-demand",
-  "/sk-hynix-stock",
-  "/why-is-there-a-chip-shortage",
-  "/silicon-shortage",
-  "/pricing",
-  "/privacy",
-  "/terms",
-  "/sitemap.xml",
-  "/robots.txt",
-  "/api/*"
+  "/*"
 ]
+
+[[d1_databases]]
+binding = "DB"
+# Shared production analytics D1. Rows are isolated by site_key.
+database_name = "openclaw-launch"
+database_id = "5c31068a-d85a-4c83-9efe-01e2de1ad22b"
