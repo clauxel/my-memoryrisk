@@ -22,4 +22,3 @@ Required secrets:
 - Worker/Pages secret `API_PROD_KEY` for Creem checkout
 
 The public site is `https://memoryrisk.space` with `https://www.memoryrisk.space` supported.
-

@@ -158,8 +158,8 @@ async function readJsonResponse<T>(response: Response): Promise<T | null> {
   }
 }
 
-async function createCheckoutSession(planId: PlanId, billing: Billing) {
-  const response = await fetch(resolveApiUrl('/api/checkout'), {
+async function createCheckoutSession(planId: PlanId, billing: Billing, endpoint = '/api/checkout') {
+  const response = await fetch(resolveApiUrl(endpoint), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ planId, billing }),
@@ -397,7 +397,7 @@ export default function App() {
     trackEvent('template_downloaded')
   }
 
-  async function startHostedCheckout(planId: PlanId, billingCycle: Billing, loadingKey: string) {
+  async function startHostedCheckout(planId: PlanId, billingCycle: Billing, loadingKey: string, provider = 'creem') {
     const popup = openCenteredCheckoutWindow()
     setSelectedPlanId(planId)
     setBilling(billingCycle)
@@ -406,7 +406,7 @@ export default function App() {
     trackEvent('checkout_open_start', { planId, billing: billingCycle, popup: Boolean(popup) })
 
     try {
-      const checkoutUrl = await createCheckoutSession(planId, billingCycle)
+      const checkoutUrl = await createCheckoutSession(planId, billingCycle, provider === 'nowpayments' ? '/api/nowpayments-checkout' : '/api/checkout')
       const popupReady = sendPopupToCheckout(popup, checkoutUrl)
       trackEvent('checkout_session_created', { planId, billing: billingCycle, popupReady })
       setCheckoutModal({ planId, billing: billingCycle, loadingKey, status: popupReady ? 'popup' : 'retry', checkoutUrl })
@@ -635,6 +635,14 @@ export default function App() {
                   disabled={checkoutLoadingKey !== null}
                 >
                   {checkoutLoadingKey === loadingKey ? 'Opening secure checkout...' : plan.id === 'team' ? ctaCheckout : `Checkout ${plan.shortName} ${billing}`}
+                </button>
+                <button
+                  type="button"
+                  className="mr-btn mr-btn-ghost"
+                  onClick={() => void startHostedCheckout(plan.id, billing, `${loadingKey}-wallet`, 'nowpayments')}
+                  disabled={checkoutLoadingKey !== null}
+                >
+                  {checkoutLoadingKey === `${loadingKey}-wallet` ? 'Opening USDC wallet...' : 'Pay with USDC Wallet'}
                 </button>
                 {active ? <span className="mr-plan-selected">Selected</span> : null}
               </div>
