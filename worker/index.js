@@ -60,7 +60,7 @@ const indexablePaths = [
   '/github',
 ]
 
-const staticAssetPaths = new Set([...indexablePaths, '/checkout/done'
+const staticAssetPaths = new Set([...indexablePaths, '/checkout/done',
   '/features',
   '/how-it-works',
   '/use-cases',
