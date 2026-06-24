@@ -19,6 +19,6 @@ Required secrets:
 - `CLOUDFLARE_API_KEY`
 - `CLOUDFLARE_EMAIL`
 - `CLOUDFLARE_ACCOUNT_ID`
-- Worker/Pages secret `API_PROD_KEY` for Creem checkout
+- Worker/Pages secret `API_PROD_KEY` for Polar checkout
 
 The public site is `https://memoryrisk.space` with `https://www.memoryrisk.space` supported.

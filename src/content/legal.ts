@@ -30,7 +30,7 @@ export const legalPrivacySections: LegalSection[] = [
   {
     title: 'Service providers',
     paragraphs: [
-      'Cloudflare supports hosting, routing, security, analytics infrastructure, edge execution, and related site operations. Creem supports hosted checkout and payment processing.',
+      'Cloudflare supports hosting, routing, security, analytics infrastructure, edge execution, and related site operations. Polar supports hosted checkout and payment processing.',
       'Payment details are handled by the payment provider. MemoryRisk does not ask users to send card numbers, passwords, supplier portal credentials, or private procurement credentials by email or through the public planner.',
       'Third-party services process information under their own terms and privacy practices. Do not proceed with checkout or external services if you do not accept those practices.',
     ],
@@ -89,7 +89,7 @@ export const legalTermsSections: LegalSection[] = [
   {
     title: 'Payments, renewals, and refunds',
     paragraphs: [
-      'Payments are processed by Creem in a hosted popup window. Successful checkouts return the user to the MemoryRisk homepage or checkout completion route.',
+      'Payments are processed by Polar in a hosted popup window. Successful checkouts return the user to the MemoryRisk homepage or checkout completion route.',
       'Displayed annual pricing reflects a 50% discount versus the monthly run-rate for the same plan. Prices, plan names, features, limits, and availability may change before purchase.',
       'Unless a separate written agreement says otherwise, purchases are final to the maximum extent permitted by law. If the payment provider, consumer law, or a written policy requires a refund, that required rule controls.',
       'Chargebacks, payment abuse, account sharing, unauthorized resale, or attempted circumvention of checkout may result in suspension, cancellation, refusal of service, evidence preservation, or collection of amounts owed.',
@@ -106,7 +106,7 @@ export const legalTermsSections: LegalSection[] = [
   {
     title: 'Third-party services and external data',
     paragraphs: [
-      'Cloudflare, Creem, suppliers, distributors, cloud providers, quote providers, price indexes, data providers, spreadsheet tools, and other third-party services may be involved in hosting, checkout, references, integrations, or customer workflows.',
+      'Cloudflare, Polar, suppliers, distributors, cloud providers, quote providers, price indexes, data providers, spreadsheet tools, and other third-party services may be involved in hosting, checkout, references, integrations, or customer workflows.',
       'We are not responsible for third-party services, third-party outages, payment provider decisions, quote changes, supplier behavior, allocation decisions, cloud pricing, rate limits, import errors, data quality, or third-party terms.',
       'Your use of third-party services is governed by the applicable third-party terms, privacy policies, account rules, pricing, and fees.',
     ],

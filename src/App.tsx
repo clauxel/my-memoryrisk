@@ -329,7 +329,7 @@ export default function App() {
       if (event.data?.type !== 'memoryrisk-checkout-complete') return
       setCheckoutModal(null)
       setCheckoutLoadingKey(null)
-      trackEvent('checkout_success_return', { provider: 'creem' })
+      trackEvent('checkout_success_return', { provider: 'polar' })
       navigate('/?payment=success')
     }
 
@@ -397,7 +397,7 @@ export default function App() {
     trackEvent('template_downloaded')
   }
 
-  async function startHostedCheckout(planId: PlanId, billingCycle: Billing, loadingKey: string, provider = 'creem') {
+  async function startHostedCheckout(planId: PlanId, billingCycle: Billing, loadingKey: string, provider = 'polar') {
     const popup = openCenteredCheckoutWindow()
     setSelectedPlanId(planId)
     setBilling(billingCycle)
@@ -406,7 +406,7 @@ export default function App() {
     trackEvent('checkout_open_start', { planId, billing: billingCycle, popup: Boolean(popup) })
 
     try {
-      const checkoutUrl = await createCheckoutSession(planId, billingCycle, provider === 'nowpayments' ? '/api/nowpayments-checkout' : '/api/checkout')
+      const checkoutUrl = await createCheckoutSession(planId, billingCycle, provider === 'polar' ? '/api/polar-checkout' : '/api/checkout')
       const popupReady = sendPopupToCheckout(popup, checkoutUrl)
       trackEvent('checkout_session_created', { planId, billing: billingCycle, popupReady })
       setCheckoutModal({ planId, billing: billingCycle, loadingKey, status: popupReady ? 'popup' : 'retry', checkoutUrl })
@@ -556,7 +556,7 @@ export default function App() {
         <div>
           <p className="mr-eyebrow">Recommended next move</p>
           <h3>Keep Team annual selected once the BOM risk report fits the buying workflow.</h3>
-          <p>Checkout opens in a centered Creem popup while the planner stays visible.</p>
+          <p>Checkout opens in a centered Polar popup while the planner stays visible.</p>
         </div>
         <button type="button" className="mr-btn mr-btn-primary" onClick={() => chooseTeamAnnual('planner')}>
           <Wallet size={18} />
@@ -639,7 +639,7 @@ export default function App() {
                 <button
                   type="button"
                   className="mr-btn mr-btn-ghost"
-                  onClick={() => void startHostedCheckout(plan.id, billing, `${loadingKey}-wallet`, 'nowpayments')}
+                  onClick={() => void startHostedCheckout(plan.id, billing, `${loadingKey}-wallet`, 'polar')}
                   disabled={checkoutLoadingKey !== null}
                 >
                   {checkoutLoadingKey === `${loadingKey}-wallet` ? 'Opening USDC wallet...' : 'Pay with USDC Wallet'}
@@ -719,7 +719,7 @@ export default function App() {
             <div className="mr-hero-proof">
               <div>
                 <span>Default path</span>
-                <strong>Planner to Team annual to Creem popup to homepage return</strong>
+                <strong>Planner to Team annual to Polar popup to homepage return</strong>
               </div>
               <div>
                 <span>Trust posture</span>
@@ -987,14 +987,14 @@ export default function App() {
             <div className="mr-checkout-loading">
               <span aria-hidden />
               <div>
-                <h2>Preparing Creem checkout...</h2>
+                <h2>Preparing Polar checkout...</h2>
                 <p>Team annual stays selected while the secure payment window opens.</p>
               </div>
             </div>
           ) : (
             <div className="mr-checkout-copy">
               <p className="mr-eyebrow">Secure checkout</p>
-              <h2>{checkoutModal.status === 'popup' ? 'Your Creem payment window is open.' : 'Popup blocked or checkout needs a retry.'}</h2>
+              <h2>{checkoutModal.status === 'popup' ? 'Your Polar payment window is open.' : 'Popup blocked or checkout needs a retry.'}</h2>
               <p>
                 {plan.name} {checkoutModal.billing} is set to {formatMoney(monthly)}/mo
                 {checkoutModal.billing === 'annual' ? ' with 50% annual savings.' : '.'}
